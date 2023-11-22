@@ -1,7 +1,4 @@
-# Generate day
-
-from os import path, makedirs
-
+# Make my day
 
 def prompt(text):
     return input(text + '\n')
@@ -12,79 +9,55 @@ def confirm(text):
     return s in ('Y', 'y', '')
 
 
-print('Generate day')
+print()
+
+print('Time to make my day!')
+
+print()
 
 day = prompt('What day of december is it?')
 
 if len(day) < 2:
     day = f'0{day}'
 
-name = prompt('What is the name of today\'s puzzle?')
+print()
 
-input_files = confirm('Does this puzzle need a input file?')
+name = prompt("What is the name of today's puzzle?")
 
-correct = confirm(
-    '\n'.join([
-        f'day: {day}',
-        f'name: {name}',
-        f'needs input: {"yes" if input_files else "no"}',
-        'Is this correct?',
-    ])
-)
+open(f'{day}_input.txt', 'a')
+test_json = open(f'{day}_tests.py', 'a')
+test_json.write("""
 
-if correct:
-    py = open(f'{day}.py', 'a')
-    if input_files:
-        if not path.exists('input'):
-            makedirs('input')
+# tests for day {day}: {name}
 
-        open(f'input/{day}.txt', 'a')
-        open(f'input/{day}.test.txt', 'a')
+part_1 = [
+    {'expected': '', 'input':  ['']},
+]
 
-    py_lines = [f"""
+part_2 = [
+    {'expected': '', 'input':  ['']},
+]
+
+""".strip() + '\n')
+
+py = open(f'{day}_solver.py', 'a')
+py.write(f"""
+
 # {name}
 
-from read_input import read_lines
-from timer import timer
+from common import timer
 
-""".strip()]
+name = '{name}'
 
-    if input_files:
-        py_lines.append(f"""
-
-lines = read_lines('{day}')
-""")
-
-    py_lines.append(f"""
 
 @timer
-def run_part_1():
+def part_1(lines: list[str]):
     pass
 
 
 @timer
-def run_part_2():
+def part_2(lines: list[str]):
     pass
 
-
-print()
-
-print('Day {day}: {name}')
-
-print()
-
-part_1 = run_part_1()
-part_2 = run_part_2()
-
-print()
-
-print('Part one:', part_1)
-print('Part two:', part_2)
-
-print()
-""")
-
-    py.writelines(py_lines)
-
-else:
-    print('no? oh well...\ngoodbye!')
+""".strip() + '\n')
+py.close()

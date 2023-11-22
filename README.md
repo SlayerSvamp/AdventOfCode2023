@@ -2,7 +2,7 @@
 
 Made in python
 
-### Generate day:
+### Generate files for a day:
 
 ```powershell
 > py .\make_my_day.py
@@ -14,20 +14,15 @@ Made in python
 run
 
 ```powershell
-> py .\01.py
-# file path ./input/01.txt
+> py .\run.py 1
+# solver at 01_solver.py
+# input at 01_input.txt
 ```
 
-run test
+run tests
 
 ```powershell
-> py .\01.py test
-# file path ./input/01.test.txt
-```
-
-run any other test file
-
-```powershell
-> py .\01.py any_name
-# file path ./input/01.any_name.txt
+> py .\test.py 1
+# solver at 01_solver.py
+# test cases at 01_tests.py
 ```

@@ -1,6 +1,5 @@
 from time import time_ns
 
-
 def timer(func):
     def inner(*args, **kwargs):
         start = time_ns()
