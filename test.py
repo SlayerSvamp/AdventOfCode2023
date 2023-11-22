@@ -12,18 +12,19 @@ print(f'Running tests for day {day}: {solver.name}')
 print()
 
 parts = [
-    ('part 1', tests.part_1, solver.part_1),
-    ('part 2', tests.part_2, solver.part_2),
+    (tests.part_one, solver.part_one),
+    (tests.part_two, solver.part_two),
 ]
-for name, cases, run in parts:
-    for case in cases:
-        print(f'Testing {name}')
+for cases, run in parts:
+    print(f'Testing {run.__name__}:')
+    for i, case in enumerate(cases):
+        print(f'case {i + 1}/{len(cases)}...', end='')
         expected = case.get('expected')
         inp = case.get('input')
         actual = str(run(inp))
         assert actual == expected, f'expected "{expected}", got "{actual}"'
-
-print()
+        print(' done!')
+    print()
 
 print("All tests done!")
 

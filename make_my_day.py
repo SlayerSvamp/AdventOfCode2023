@@ -4,38 +4,33 @@ def prompt(text):
     return input(text + '\n')
 
 
-def confirm(text):
-    s = prompt(text + ' (Y/n)')
-    return s in ('Y', 'y', '')
-
-
 print()
 
 print('Time to make my day!')
 
 print()
 
-day = prompt('What day of december is it?')
-
-if len(day) < 2:
-    day = f'0{day}'
+print('What day of december is it?')
+inp = input()
+day = f'{int(inp):02d}'
 
 print()
 
-name = prompt("What is the name of today's puzzle?")
+print("What is the name of today's puzzle?")
+name = input()
 
 open(f'{day}_input.txt', 'a')
 test_json = open(f'{day}_tests.py', 'a')
-test_json.write("""
+test_json.write(f"""
 
-# tests for day {day}: {name}
+# Tests for day {day}: {name}
 
-part_1 = [
-    {'expected': '', 'input':  ['']},
+part_one = [
+    {{'expected': '', 'input':  ['']}},
 ]
 
-part_2 = [
-    {'expected': '', 'input':  ['']},
+part_two = [
+    {{'expected': '', 'input':  ['']}},
 ]
 
 """.strip() + '\n')
@@ -43,20 +38,16 @@ part_2 = [
 py = open(f'{day}_solver.py', 'a')
 py.write(f"""
 
-# {name}
-
-from common import timer
+# Day {day}: {name}
 
 name = '{name}'
 
 
-@timer
-def part_1(lines: list[str]):
+def part_one(lines: list[str]):
     pass
 
 
-@timer
-def part_2(lines: list[str]):
+def part_two(lines: list[str]):
     pass
 
 """.strip() + '\n')
