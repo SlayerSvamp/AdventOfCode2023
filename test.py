@@ -1,31 +1,50 @@
 from importlib import import_module
 from sys import argv
+from style import *
 
 day = f'{int(argv[1]):02d}'
 solver = import_module(f'{day}_solver')
 tests = import_module(f'{day}_tests')
 
-print()
 
-print(f'Running tests for day {day}: {solver.name}')
+print(f"""
+{divider.spiral}{em.dim}
 
-print()
+ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗
+ ╚═╗ ╔═╝ ║ ╔═══╝ ║ ╔═══╝ ╚═╗ ╔═╝
+   ║ ║   ║ ╚══╗  ║ ╚═══╗   ║ ║
+   ║ ║   ║ ╔══╝  ╚═══╗ ║   ║ ║
+   ║ ║   ║ ╚═══╗ ╔═══╝ ║   ║ ║
+   ╚═╝   ╚═════╝ ╚═════╝   ╚═╝
+   {reset}{solver.name}
+""")
 
 parts = [
     (tests.part_one, solver.part_one),
     (tests.part_two, solver.part_two),
 ]
 for cases, run in parts:
-    print(f'Testing {run.__name__}:')
+    print()
+    print(f'{em.dim}Testing {run.__name__}:{reset}')
+    print(divider.single)
     for i, case in enumerate(cases):
-        print(f'case {i + 1}/{len(cases)}...', end='')
+        print(
+            f'case {i + 1}{em.dim}/{reset}{len(cases)}{em.dim}...{reset} ', end='')
         expected = case.get('expected')
         inp = case.get('input')
         actual = str(run(inp))
-        assert actual == expected, f'expected "{expected}", got "{actual}"'
-        print(' done!')
+        if actual == expected:
+            print(f'{fg.green}done!{reset}')
+        else:
+            print(f'{fg.red}fail!{reset}')
+            print(f'{em.dim} expected: "{reset}' +
+                  f'{fg.blue}{expected}{reset}{em.dim}"{reset}')
+            print(f'{em.dim}   actual: "{reset}' +
+                  f'{fg.blue}{actual}{reset}{em.dim}"{reset}')
     print()
 
-print("All tests done!")
+print(f"""
+{fg.green}{em.bold}All tests done!{reset}
 
-print()
+{divider.spiral}
+""")

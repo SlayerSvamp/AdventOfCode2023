@@ -18,19 +18,20 @@ print()
 
 print("What is the name of today's puzzle?")
 name = input()
+full_name = f'Day {int(day)}: {name}'
 
 open(f'{day}_input.txt', 'a')
 test_json = open(f'{day}_tests.py', 'a')
 test_json.write(f"""
 
-# Tests for day {day}: {name}
+# {full_name} - Tests
 
 part_one = [
-    {{'expected': '', 'input':  ['']}},
+    {{'expected': '', 'input': ['']}},
 ]
 
 part_two = [
-    {{'expected': '', 'input':  ['']}},
+    {{'expected': '', 'input': ['']}},
 ]
 
 """.strip() + '\n')
@@ -38,9 +39,9 @@ part_two = [
 py = open(f'{day}_solver.py', 'a')
 py.write(f"""
 
-# Day {day}: {name}
+# {full_name}
 
-name = '{name}'
+name = '{full_name}'
 
 
 def part_one(lines: list[str]):
