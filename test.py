@@ -1,8 +1,13 @@
 from importlib import import_module
 from sys import argv
+from glob import glob
 from style import *
 
-day = f'{int(argv[1]):02d}'
+if len(argv) > 1:
+    day = f'{int(argv[1]):02d}'
+else:
+    files = glob('*_solver.py')
+    day = max(file[:2] for file in files)
 solver = import_module(f'{day}_solver')
 tests = import_module(f'{day}_tests')
 
