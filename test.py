@@ -13,7 +13,7 @@ tests = import_module(f'{day}_tests')
 
 
 print(f"""
-{divider.spiral}{em.dim}
+{divider.spiral}{fg.gray}
 
  ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗
  ╚═╗ ╔═╝ ║ ╔═══╝ ║ ╔═══╝ ╚═╗ ╔═╝
@@ -30,11 +30,11 @@ parts = [
 ]
 for cases, run in parts:
     print()
-    print(f'{em.dim}Testing {run.__name__}:{reset}')
+    print(f'{fg.gray}Testing {run.__name__}:{reset}')
     print(divider.single)
     for i, case in enumerate(cases):
         print(
-            f'case {i + 1}{em.dim}/{reset}{len(cases)}{em.dim}...{reset} ', end='')
+            f'case {i + 1}{fg.gray}/{reset}{len(cases)}{fg.gray}...{reset} ', end='')
         expected = case.get('expected')
         inp = case.get('input')
         actual = str(run(inp))
@@ -42,10 +42,10 @@ for cases, run in parts:
             print(f'{fg.green}done!{reset}')
         else:
             print(f'{fg.red}fail!{reset}')
-            print(f'{em.dim} expected: "{reset}' +
-                  f'{fg.blue}{expected}{reset}{em.dim}"{reset}')
-            print(f'{em.dim}   actual: "{reset}' +
-                  f'{fg.blue}{actual}{reset}{em.dim}"{reset}')
+            print(f'{fg.gray} expected: "{reset}' +
+                  f'{fg.blue}{expected}{reset}{fg.gray}"{reset}')
+            print(f'{fg.gray}   actual: "{reset}' +
+                  f'{fg.blue}{actual}{reset}{fg.gray}"{reset}')
     print()
 
 print(f"""

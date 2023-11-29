@@ -10,6 +10,7 @@ class em:
 
 
 class fg:
+    gray = '\033[38;5;240m'
     black = '\033[30m'
     red = '\033[31m'
     green = '\033[32m'
@@ -56,6 +57,6 @@ class bg:
 
 
 class divider:
-    single = em.dim + '-'*33 + reset
-    double = em.dim + '='*33 + reset
-    spiral = em.dim + '%'*33 + reset
+    single = fg.gray + '-'*33 + reset
+    double = fg.gray + '='*33 + reset
+    spiral = fg.gray + '%'*33 + reset
