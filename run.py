@@ -11,7 +11,8 @@ else:
     day = max(file[:2] for file in files)
 solver = import_module(f'{day}_solver')
 
-lines = open(f'{day}_input.txt', 'r').read().splitlines()
+with open(f'{day}_input.txt', 'r') as file:
+    lines = file.read().splitlines()
 
 
 def clock(solve) -> str:
