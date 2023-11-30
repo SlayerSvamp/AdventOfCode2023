@@ -1,22 +1,24 @@
 # Make my day
 
+from style import divider
+
+
 def prompt(text):
     return input(text + '\n')
 
 
-print()
+print(f"""
+{divider.spiral}
 
-print('Time to make my day!')
-
-print()
-
-print('What day of december is it?')
+Time to make my day!
+What day of december is it?
+""".rstrip())
 inp = input()
 day = f'{int(inp):02d}'
 
-print()
-
-print("What is the name of today's puzzle?")
+print(f"""
+What is the name of today's puzzle?
+""".rstrip())
 name = input()
 full_name = f'Day {int(day)}: {name}'
 
@@ -42,6 +44,9 @@ py.write(f"""
 # {full_name}
 
 name = '{full_name}'
+
+part_one_verified = None
+part_two_verified = None
 
 
 def part_one(lines: list[str]):

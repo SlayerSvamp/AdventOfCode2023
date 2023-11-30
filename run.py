@@ -1,7 +1,7 @@
 from importlib import import_module
-from sys import argv
+from sys import argv, stdout
 from glob import glob
-from time import time_ns
+from clock import clock
 from style import *
 
 if len(argv) > 1:
@@ -15,13 +15,11 @@ with open(f'{day}_input.txt', 'r') as file:
     lines = file.read().splitlines()
 
 
-def clock(solve) -> str:
+def run(solve):
     print(f'{solve.__name__}{fg.gray}... ', end='')
-    start = time_ns()
-    answer = solve(lines)
-    end = time_ns()
-    print('done in', end=reset)
-    print(f'{(end - start)/10**9: .2f} {fg.gray}seconds{reset}')
+    stdout.flush()
+    [answer, time_one] = clock(solve, lines)
+    print(f'done! - {reset}{time_one}')
     return answer
 
 
@@ -41,15 +39,27 @@ print(f"""
 {divider.single}
 """.rstrip())
 
-part_one = clock(solver.part_one)
-part_two = clock(solver.part_two)
+part_one = run(solver.part_one)
+part_two = run(solver.part_two)
+
+
+def get_color(expected, actual):
+    if expected == None:
+        return fg.blue
+    if expected == actual:
+        return fg.yellow
+    return fg.red
+
+
+part_one_color = get_color(solver.part_one_verified, part_one)
+part_two_color = get_color(solver.part_two_verified, part_two)
 
 print(f"""
 
 {fg.gray}Results:{reset}
 {divider.single}
-{fg.gray}Part{reset} one: {em.bold}{fg.bright.yellow}{part_one}{reset}
-{fg.gray}Part{reset} two: {em.bold}{fg.bright.yellow}{part_two}{reset}
+{fg.gray}Part{reset} one: {em.bold}{part_one_color}{part_one}{reset}
+{fg.gray}Part{reset} two: {em.bold}{part_two_color}{part_two}{reset}
 
 
 {fg.green}{em.bold}Done!{reset}
