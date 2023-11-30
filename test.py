@@ -37,11 +37,10 @@ for cases, run in parts:
         def gray(x): return f'{fg.gray}{x}{reset}'
         print(f'case {i + 1}{gray("/")}{len(cases)}{gray("...")} ', end='')
         stdout.flush()
-        expected = case.get('expected')
+        expected = str(case.get('expected'))
         inp = case.get('input')
-        [result, time] = clock(run, inp)
-        actual = str(result)
-        if actual == expected:
+        [actual, time] = clock(run, inp)
+        if str(expected) == str(actual):
             print(f'{fg.green}done!{reset}{fg.gray} - {reset}{time}')
         else:
             print(f'{fg.red}fail!{reset}{fg.gray} - {reset}{time}')

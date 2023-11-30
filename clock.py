@@ -2,7 +2,7 @@ from time import time_ns
 from style import *
 
 
-def clock(solve, lines) -> [any, str]:
+def clock(solve, lines) -> list[any, str]:
     start = time_ns()
     answer = solve(lines)
     end = time_ns()

@@ -46,7 +46,7 @@ part_two = run(solver.part_two)
 def get_color(expected, actual):
     if expected == None:
         return fg.blue
-    if expected == actual:
+    if str(expected) == str(actual):
         return fg.yellow
     return fg.red
 
