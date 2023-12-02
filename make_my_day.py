@@ -1,6 +1,6 @@
 # Make my day
 
-from style import divider
+from style import *
 
 
 def prompt(text):
@@ -8,9 +8,18 @@ def prompt(text):
 
 
 print(f"""
-{divider.spiral}
+{divider.spiral}{fg.gray}
 
-Time to make my day!
+  ╔════╗╔═╗ ╔═════╗ ╔═╗    ╔═╗
+  ║ ╔═╗║║ ║ ║ ╔═══╝ ║ ║    ║ ║
+  ║ ║ ║║║ ║ ║ ╚══╗  ║ ║╔══╗║ ║
+  ║ ║ ║║║ ║ ║ ╔══╝  ║ ║║╔╗║║ ║
+  ║ ║ ║╚╝ ║ ║ ╚═══╗ ║ ╚╝║║╚╝ ║
+  ╚═╝ ╚═══╝ ╚═════╝ ╚═══╝╚═══╝
+  {reset}Time to make my day!
+
+{fg.gray}Collection info:{reset}
+{divider.single}
 What day of december is it?
 """.rstrip())
 inp = input()
@@ -22,9 +31,19 @@ What is the name of today's puzzle?
 name = input()
 full_name = f'Day {int(day)}: {name}'
 
-open(f'{day}_input.txt', 'a')
-test_json = open(f'{day}_tests.py', 'a')
-test_json.write(f"""
+print(f'''
+{fg.gray}Creating files:{reset}
+{divider.single}
+'''.rstrip())
+
+input_filename = f'{day}_input.txt'
+print(input_filename)
+open(input_filename, 'a')
+
+test_filename = f'{day}_tests.py'
+print(test_filename)
+test_py = open(test_filename, 'a')
+test_py.write(f"""
 
 # {full_name} - Tests
 
@@ -38,7 +57,9 @@ part_two = [
 
 """.strip() + '\n')
 
-py = open(f'{day}_solver.py', 'a')
+solver_filename = f'{day}_solver.py'
+print(solver_filename)
+py = open(solver_filename, 'a')
 py.write(f"""
 
 # {full_name}
@@ -58,3 +79,11 @@ def part_two(lines: list[str]):
 
 """.strip() + '\n')
 py.close()
+
+print(f'''
+{fg.gray}Created{reset} {fg.blue}{full_name}{reset}
+
+{fg.green}Done!{reset}
+
+{divider.spiral}
+''')
