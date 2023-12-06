@@ -1,8 +1,6 @@
 # Day 6: Wait For It
 
-from functools import reduce
-from re import split as re_split
-
+from math import ceil, prod
 
 name = 'Day 6: Wait For It'
 
@@ -10,23 +8,36 @@ part_one_verified = 1710720
 part_two_verified = 35349468
 
 
-def get_ways(pair):
-    time, distance = pair
-    ways = 0
-    for t in range(time):
-        if t * (time - t) > distance:
-            ways += 1
-    return ways
+def count_ways(pair):
+    time, distance = map(int, pair)
+    current = 0
+    step = time
+    while step > 1:
+        step = ceil(step / 2)
+        too_high, high_enough = (
+            time * i - i ** 2 > distance
+            for i in [current, current + 1]
+        )
+        if too_high:
+            current -= step
+        elif not high_enough:
+            current += step
+    return time - current * 2 - 1
+
+
+def parse_numbers(lines):
+    return [
+        filter(str.isnumeric, line.split(' '))
+        for line in lines
+    ]
 
 
 def part_one(lines: list[str]):
-    times = list(map(int, re_split(r' +', lines[0])[1:]))
-    distances = list(map(int, re_split(r' +', lines[1])[1:]))
-    races = list(map(get_ways, zip(times, distances)))
-    return reduce(lambda a, b: a*b, races)
+    pairs = zip(*parse_numbers(lines))
+    ways = map(count_ways, pairs)
+    return prod(ways)
 
 
 def part_two(lines: list[str]):
-    time = int(lines[0].split(':')[1].replace(' ', ''))
-    distance = int(lines[1].split(':')[1].replace(' ', ''))
-    return get_ways((time, distance))
+    pair = map(''.join, parse_numbers(lines))
+    return count_ways(pair)
