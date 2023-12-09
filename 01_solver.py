@@ -1,8 +1,5 @@
 # Day 1: Trebuchet?!
 
-import re
-
-
 name = 'Day 1: Trebuchet?!'
 
 part_one_verified = 55834

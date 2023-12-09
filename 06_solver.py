@@ -2,6 +2,7 @@
 
 from math import ceil, prod
 
+
 name = 'Day 6: Wait For It'
 
 part_one_verified = 1710720
