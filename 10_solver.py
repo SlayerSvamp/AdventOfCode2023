@@ -33,7 +33,6 @@ def find_loop(lines):
     loop = set()
     left_side = set()
     right_side = set()
-    total_turn = 0
 
     while True:
         loop.add((x, y))
@@ -48,13 +47,11 @@ def find_loop(lines):
         pipe = maze[x, y]
 
         if pipe == 'S':
-            enclosed = left_side if total_turn < 0 else right_side
+            enclosed = min(left_side, right_side, key=max)
             return loop, enclosed - loop
 
         turn = direction_shapes[direction].index(pipe) - 1
-        total_turn += turn
-        direction += 4 + turn
-        direction %= 4
+        direction = (direction + turn + 4) % 4
 
 
 def part_one(lines: list[str]):
