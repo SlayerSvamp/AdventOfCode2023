@@ -39,7 +39,8 @@ for cases, run in parts:
         stdout.flush()
         expected = str(case.get('expected'))
         inp = case.get('input')
-        [actual, time] = clock(run, inp)
+        args = case.get('args', [])
+        [actual, time] = clock(run, inp, args)
         if str(expected) == str(actual):
             print(f'{fg.green}done!{reset}{fg.gray} - {reset}{time}')
         else:
