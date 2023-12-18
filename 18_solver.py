@@ -2,66 +2,51 @@
 
 name = 'Day 18: Lavaduct Lagoon'
 
+
 part_one_verified = 48795
-part_two_verified = None
+part_two_verified = 40654918441248
 
 
-def ray_casting_inside(vertical, grid):
-    [min_x, max_x] = sorted(x for x, _ in grid)[::len(grid)-2]
-    [min_y, max_y] = sorted(y for _, y in grid)[::len(grid)-2]
-    inside = set()
-    for y in range(min_y, max_y + 1):
-        isInside = False
-        for x in range(min_x, max_x + 1):
-            if (x, y) in vertical:
-                isInside ^= True
-            elif isInside:
-                inside.add((x, y))
-    return inside
+def shoelace_formula(coordinates):
+    zipped = list(zip(coordinates[:], coordinates[1:]))
+    return abs(sum(
+        (x1*y2) - (x2*y1)
+        for (x1, y1), (x2, y2) in zipped
+    )) // 2
 
 
 def lagoon_size(instructions):
-    x, y = 0, 0
-    edge = {(0, 0)}
-    vertical = set()
-
-    for direction, steps in instructions:
-        dx, dy = 0, 0
-        if direction == 'U':
-            dy = -1
-            vertical.add((x, y))
-        elif direction == 'R':
-            dx = 1
-        if direction == 'D':
-            dy = 1
-        elif direction == 'L':
-            dx = -1
-        for _ in range(steps):
-            x, y = x+dx, y+dy
-            edge.add((x, y))
-            if direction in 'UD':
-                vertical.add((x, y))
-        if direction == 'U':
-            vertical.remove((x, y))
-    inside = ray_casting_inside(vertical, edge)
-
-    return len(inside | edge)
+    direction_coordinates = {
+        'R': (1, 0),
+        'D': (0, 1),
+        'L': (-1, 0),
+        'U': (0, -1),
+    }
+    coordinates = [(x, y)] = [(0, 0)]
+    for direction, meters in instructions:
+        dx, dy = direction_coordinates[direction]
+        x = x + dx * meters
+        y = y + dy * meters
+        coordinates.append((x, y))
+    area = shoelace_formula(coordinates)
+    trench_meters = sum(meters for _, meters in instructions)
+    trench_outside_area = trench_meters // 2 + 1
+    return area + trench_outside_area
 
 
 def part_one(lines: list[str]):
     instructions = []
     for line in lines:
-        direction, steps, _ = line.split(' ')
-        instructions.append((direction, int(steps)))
-
+        direction, meters = line.split(' ')[:2]
+        instructions.append((direction, int(meters)))
     return lagoon_size(instructions)
 
 
 def part_two(lines: list[str]):
-    instructions = []
+    correct_instructions = []
     for line in lines:
-        [*steps_hex, direction_num] = line.split('#')[1][:-1]
-        steps = int(''.join(steps_hex), 16)
-        direction = 'RDLU'[int(direction_num)]
-        instructions.append((direction, steps))
-    return lagoon_size(instructions)
+        hex = line[:-1].split('#')[1]
+        meters = int(''.join(hex[:-1]), 16)
+        direction = 'RDLU'[int(hex[-1])]
+        correct_instructions.append((direction, meters))
+    return lagoon_size(correct_instructions)
