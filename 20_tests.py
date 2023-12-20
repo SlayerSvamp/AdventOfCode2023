@@ -17,6 +17,4 @@ part_one = [
     ]},
 ]
 
-part_two = [
-    {'expected': '', 'input': ['']},
-]
+part_two = []
