@@ -3,24 +3,8 @@
 name = 'Day 21: Step Counter'
 
 part_one_verified = 3858
-part_two_verified = None
-
+part_two_verified = 636350496972143
 directions = ((0, 1), (1, 0), (-1, 0), (0, -1))
-
-
-def adjacent(plots, plot, wrap_size):
-    x, y = plot
-    if wrap_size:
-        wx, wy = wrap_size or (0, 0)
-        for dx, dy in directions:
-            nx, ny = x+dx, y+dy
-            if (nx % wx, ny % wy) in plots:
-                yield nx, ny
-    else:
-        for dx, dy in directions:
-            adj = x+dx, y+dy
-            if adj in plots:
-                yield adj
 
 
 def parse_garden(lines):
@@ -32,39 +16,53 @@ def parse_garden(lines):
     }
 
 
-def get_final_plots(plots, steps, wrap_size):
-    available = {key for key in plots if plots[key] == 'S'}
-    prev_prev_odd = set()
-    prev_prev_even = set()
-    prev_odd = set()
-    prev_even = set(available)
-    odd = 0
-    even = 1
-    for step in range(1, steps+1):
-        available = {
-            adj
-            for plot in available
-            for adj in adjacent(plots, plot, wrap_size)
-        }
-        if step % 2:
-            available -= prev_even | prev_prev_even
-            prev_prev_even = prev_even
-            prev_even = available
-            even += len(available)
-        else:
-            available -= prev_odd | prev_prev_odd
-            prev_prev_odd = prev_odd
-            prev_odd = available
-            odd += len(available)
+def adjacent(plots, plot):
+    x, y = plot
+    for dx, dy in directions:
+        adj = x+dx, y+dy
+        if adj in plots:
+            yield adj
 
-    return (even if steps % 2 else odd)
+
+def get_garden_progression(plots):
+    def inner():
+        available = {c for c in plots if plots[c] == 'S'}
+        odd = set()
+        even = set()
+        step = 0
+        while available:
+            if step % 2:
+                odd |= available
+                yield len(odd)
+            else:
+                even |= available
+                yield len(even)
+
+            step += 1
+            available = {
+                adj
+                for plot in available
+                for adj in adjacent(plots, plot)
+                if (adj not in odd) and (adj not in even)
+            }
+    return list(inner())
 
 
 def part_one(lines: list[str], steps=64):
     plots = parse_garden(lines)
-    return get_final_plots(plots, steps, False)
+    progression = get_garden_progression(plots)
+    return progression[steps]
 
 
 def part_two(lines: list[str], steps=26501365):
     plots = parse_garden(lines)
-    return get_final_plots(plots, steps, (len(lines[0]), len(lines)))
+    width = len(lines)
+    n = steps // width
+    progression = get_garden_progression(plots)
+    odd = progression[1::2][-1]
+    even = progression[::2][-1]
+    odd_diamond = progression[width // 2]
+    even_diamond = progression[width // 2 - 1]
+    even_hollow = even - even_diamond
+
+    return odd*n*(n+1) + even*n*n + odd_diamond*(n+1) + even_hollow*n
